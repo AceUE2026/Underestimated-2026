@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Critical Ops – Team Tactics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0b0f1a;
+  --card: #12182b;
+  --accent: #4f8cff;
+  --text: #e6e6e6;
+  --muted: #9aa4bf;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #121a35, var(--bg));
+  color: var(--text);
+}
+
+header {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.2em;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: linear-gradient(145deg, #161d3a, #0e1326);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+}
+
+.hidden {
+  display: none;
+}
+
+.section-title {
+  margin: 30px 0 15px;
+  font-size: 1.4em;
+}
+
+.back {
+  margin-bottom: 20px;
+  cursor: pointer;
+  color: var(--accent);
+}
+
+/* grenade list */
+
+.grenade {
+  background: var(--card);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.grenade:hover {
+  background: #1b2350;
+}
+
+.video {
+  margin-top: 10px;
+  display: none;
+}
+
+iframe {
+  width: 100%;
+  height: 260px;
+  border-radius: 10px;
+  border: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Critical Ops – Team Tactics</h1>
+  <p class="muted">Utility • Setups • Strats</p>
+</header>
+
+<div class="container">
+
+<!-- MAIN -->
+<div id="main" class="grid">
+  <div class="card" onclick="show('utility')">Utility</div>
+  <div class="card">Setups (soon)</div>
+  <div class="card">Strats (soon)</div>
+</div>
+
+<!-- MAPS -->
+<div id="utility" class="hidden">
+  <div class="back" onclick="show('main')">← Back</div>
+  <h2 class="section-title">Maps</h2>
+  <div class="grid">
+    <div class="card" onclick="openMap('Port')">Port</div>
+    <div class="card" onclick="openMap('Raid')">Raid</div>
+    <div class="card" onclick="openMap('Grounded')">Grounded</div>
+    <div class="card" onclick="openMap('Canals')">Canals</div>
+    <div class="card" onclick="openMap('Soar')">Soar</div>
+    <div class="card" onclick="openMap('Plaza')">Plaza</div>
+    <div class="card" onclick="openMap('Bureau')">Bureau</div>
+  </div>
+</div>
+
+<!-- MAP DETAIL -->
+<div id="map" class="hidden">
+  <div class="back" onclick="show('utility')">← Back to maps</div>
+  <h2 id="mapTitle"></h2>
+
+  <div class="grid">
+    <div class="card" onclick="showCategory('Flash')">Flash</div>
+    <div class="card" onclick="showCategory('Smoke')">Smoke</div>
+    <div class="card" onclick="showCategory('Molly')">Molly</div>
+    <div class="card" onclick="showCategory('Nade')">Nade</div>
+  </div>
+</div>
+
+<!-- GRENADES -->
+<div id="grenades" class="hidden">
+  <div class="back" onclick="show('map')">← Back</div>
+  <h2 id="catTitle"></h2>
+
+  <div class="grenade" onclick="toggleVideo(this)">
+    Port A Flash
+    <div class="video">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
+    </div>
+  </div>
+
+  <div class="grenade" onclick="toggleVideo(this)">
+    Mid Smoke
+    <div class="video">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+let currentMap = "";
+
+function show(id) {
+  document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+function openMap(name) {
+  currentMap = name;
+  document.getElementById('mapTitle').innerText = name + " – Utility";
+  show('map');
+}
+
+function showCategory(cat) {
+  document.getElementById('catTitle').innerText = currentMap + " – " + cat;
+  show('grenades');
+}
+
+function toggleVideo(el) {
+  const video = el.querySelector('.video');
+  video.style.display = video.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
