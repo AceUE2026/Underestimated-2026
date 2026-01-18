@@ -60,12 +60,23 @@ header {
 
 .grenade h3 {
   margin-top: 0;
+  font-size: 16px;
 }
 
-iframe {
+/* ✅ RESPONSYWNE WIDEO */
+.video-wrapper {
+  position: relative;
   width: 100%;
-  height: 220px;
+  padding-top: 56.25%; /* 16:9 */
   border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   border: none;
 }
 </style>
@@ -82,7 +93,7 @@ iframe {
 
 <script>
 /* =====================================
-   🔧 EDYTOWALNY SZABLON GRANATÓW
+   🔧 TWOJE GRANATY – BEZ ZMIAN
    ===================================== */
 
 const grenades = {
@@ -92,60 +103,35 @@ const grenades = {
         name: "Tt Al -> Ct Al popflash",
         video: "https://www.youtube.com/embed/dq4EHPfIjF0"
       },
-    
       {
-        name: "Tt mid -> As push 3 flashes setup (window,con,al)",
+        name: "Tt mid -> As push 3 flashes setup (window, con, al)",
         video: "https://www.youtube.com/embed/gSjtVdEFOs8"
       },
-    
       {
         name: "Ct As -> Bl popflash",
         video: "https://www.youtube.com/embed/KW1uZB9OYa8"
       },
-
       {
         name: "T spawn -> mid popflash",
         video: "https://www.youtube.com/embed/8or7q5kYnvg"
       },
-
       {
         name: "T spawn -> Bl flash",
         video: "https://www.youtube.com/embed/y4Lx_84dQ9A"
       }
     ],
     smoke: [
-      {
-        name:"",
-        video:""
-      },
-      {
-        name:"",
-        video:""
-      },
-      {
-        name:"",
-        video:""
-      },
-      {
-        name:"",
-        video:""
-      }.
+      { name:"", video:"" },
+      { name:"", video:"" },
+      { name:"", video:"" },
+      { name:"", video:"" }
     ],
     molly: [
-      {
-        name:"",
-        video:""
-      },
-      {
-        name:"",
-        video:""
-      }
+      { name:"", video:"" },
+      { name:"", video:"" }
     ],
     nade: [
-      {
-        name:"",
-        video:""
-      }
+      { name:"", video:"" }
     ]
   },
 
@@ -166,17 +152,15 @@ const grenades = {
   },
 
   grounded: { flash: [], smoke: [], molly: [], nade: [] },
-  canals: { flash: [], smoke: [], molly: [], nade: [] },
-  soar: { flash: [], smoke: [], molly: [], nade: [] },
-  plaza: { flash: [], smoke: [], molly: [], nade: [] },
-  bureau: { flash: [], smoke: [], molly: [], nade: [] }
+  canals:   { flash: [], smoke: [], molly: [], nade: [] },
+  soar:     { flash: [], smoke: [], molly: [], nade: [] },
+  plaza:    { flash: [], smoke: [], molly: [], nade: [] },
+  bureau:   { flash: [], smoke: [], molly: [], nade: [] }
 };
 
 /* ===================================== */
 
 let currentMap = null;
-let currentType = null;
-
 const nav = document.getElementById("nav");
 const content = document.getElementById("content");
 
@@ -193,11 +177,13 @@ function showCategories() {
 
 function showMaps() {
   nav.innerHTML = `<div class="back" onclick="showCategories()">← Back</div>`;
-  content.innerHTML = `<div class="grid">
-    ${Object.keys(grenades).map(map =>
-      `<div class="card" onclick="showTypes('${map}')">${map.toUpperCase()}</div>`
-    ).join("")}
-  </div>`;
+  content.innerHTML = `
+    <div class="grid">
+      ${Object.keys(grenades).map(map =>
+        `<div class="card" onclick="showTypes('${map}')">${map.toUpperCase()}</div>`
+      ).join("")}
+    </div>
+  `;
 }
 
 function showTypes(map) {
@@ -214,22 +200,25 @@ function showTypes(map) {
 }
 
 function showGrenades(type) {
-  currentType = type;
   nav.innerHTML = `<div class="back" onclick="showTypes('${currentMap}')">← Back</div>`;
   content.innerHTML = "";
 
   const list = grenades[currentMap][type];
 
-  if (list.length === 0) {
+  if (!list || list.length === 0) {
     content.innerHTML = "<p>Brak granatów w tej kategorii.</p>";
     return;
   }
 
   list.forEach(g => {
+    if (!g.video) return;
+
     content.innerHTML += `
       <div class="grenade">
         <h3>${g.name}</h3>
-        <iframe src="${g.video}" allowfullscreen></iframe>
+        <div class="video-wrapper">
+          <iframe src="${g.video}" allowfullscreen></iframe>
+        </div>
       </div>
     `;
   });
